@@ -2,11 +2,10 @@ package com.skuridov.tp4.dto.Document;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Data
 @NoArgsConstructor
-public abstract class DocumentForm {
+public abstract class DocumentFormDTO {
     private String id;
     private String title;
     private int publicationYear;
@@ -14,7 +13,7 @@ public abstract class DocumentForm {
     private int loanLength;
     private int nbCopies;
 
-    public DocumentForm(String id, String title, int publicationYear, String language, int loanLength, int nbCopies){
+    public DocumentFormDTO(String id, String title, int publicationYear, String language, int loanLength, int nbCopies){
         this.id = id;
         this.title = title;
         this.publicationYear = publicationYear;

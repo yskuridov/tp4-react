@@ -8,19 +8,19 @@ import static com.skuridov.tp4.model.Document.Dvd.DVD_LOAN_LENGTH;
 
 @Data
 @NoArgsConstructor
-public class DvdForm extends DocumentForm {
+public class DvdFormDTO extends DocumentFormDTO {
     private int duration;
     private String category;
     private String mainActor;
 
-    public DvdForm(String id, String title, int publicationYear, String language, int duration, String category, String mainActor, int nbCopies) {
+    public DvdFormDTO(String id, String title, int publicationYear, String language, int duration, String category, String mainActor, int nbCopies) {
         super(id, title, publicationYear, language, DVD_LOAN_LENGTH, nbCopies);
         this.duration = duration;
         this.category = category;
         this.mainActor = mainActor;
     }
 
-    public DvdForm(Dvd dvd){
+    public DvdFormDTO(Dvd dvd){
         this(Long.toString(dvd.getId()), dvd.getTitle(), dvd.getPublicationYear(), dvd.getLanguage(), dvd.getDurationInMinutes(), dvd.getCategory(), dvd.getMainActor(), dvd.getNbCopies());
     }
 

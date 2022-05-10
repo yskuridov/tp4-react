@@ -1,25 +1,18 @@
 package com.skuridov.tp4.controller;
 
-import com.skuridov.tp4.dto.Document.BookForm;
-import com.skuridov.tp4.dto.Document.CdForm;
-import com.skuridov.tp4.dto.Document.DocumentForm;
-import com.skuridov.tp4.dto.Document.DvdForm;
+import com.skuridov.tp4.dto.Document.BookFormDTO;
+import com.skuridov.tp4.dto.Document.CdFormDTO;
+import com.skuridov.tp4.dto.Document.DvdFormDTO;
 import com.skuridov.tp4.dto.Loan.LoanForm;
 import com.skuridov.tp4.dto.User.MemberForm;
-import com.skuridov.tp4.model.Document.Book;
-import com.skuridov.tp4.model.Document.Document;
-import com.skuridov.tp4.model.Loan.Loan;
 import com.skuridov.tp4.service.EmployeeService;
 import com.skuridov.tp4.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/")
@@ -52,39 +45,39 @@ public class ReactController {
     }
 
     @GetMapping("/documents/books/author/{name}")
-    public List<BookForm> getBooksByAuthor(@PathVariable String name){
+    public List<BookFormDTO> getBooksByAuthor(@PathVariable String name){
         return memberService.getBooksByAuthor(name);
     }
 
     @GetMapping("/documents/books/name/{name}")
-    public List<BookForm> getBooksByName(@PathVariable String name){
+    public List<BookFormDTO> getBooksByName(@PathVariable String name){
         return memberService.getBooksByTitle(name);
     }
 
     @GetMapping("/documents/books/genre/{genre}")
-    public List<BookForm> getBooksByGenre(@PathVariable String genre){
+    public List<BookFormDTO> getBooksByGenre(@PathVariable String genre){
         return memberService.getBooksByGenre(genre);
     }
 
     @GetMapping("/documents/books/year/{year}")
-    public List<BookForm> getBooksByYear(@PathVariable int year){
+    public List<BookFormDTO> getBooksByYear(@PathVariable int year){
         return memberService.getBooksByYear(year);
     }
 
     @PostMapping("/documents/dvds")
-    public ResponseEntity<DvdForm> createDvd(@RequestBody DvdForm dvd){
+    public ResponseEntity<DvdFormDTO> createDvd(@RequestBody DvdFormDTO dvd){
         return employeeService.createDvd(dvd.toDvd()).map(dvdForm -> ResponseEntity.status(HttpStatus.CREATED).body(dvdForm))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
     @PostMapping("/documents/cds")
-    public ResponseEntity<CdForm> createCd(@RequestBody CdForm cd){
+    public ResponseEntity<CdFormDTO> createCd(@RequestBody CdFormDTO cd){
         return employeeService.createCd(cd.toCd()).map(cdForm -> ResponseEntity.status(HttpStatus.CREATED).body(cdForm))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
     @PostMapping("/documents/books")
-    public ResponseEntity<BookForm> createBook(@RequestBody BookForm book){
+    public ResponseEntity<BookFormDTO> createBook(@RequestBody BookFormDTO book){
         return employeeService.createBook(book.toBook()).map(bookForm -> ResponseEntity.status(HttpStatus.CREATED).body(bookForm))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }

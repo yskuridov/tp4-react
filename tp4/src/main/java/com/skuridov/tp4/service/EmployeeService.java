@@ -1,8 +1,8 @@
 package com.skuridov.tp4.service;
 
-import com.skuridov.tp4.dto.Document.BookForm;
-import com.skuridov.tp4.dto.Document.CdForm;
-import com.skuridov.tp4.dto.Document.DvdForm;
+import com.skuridov.tp4.dto.Document.BookFormDTO;
+import com.skuridov.tp4.dto.Document.CdFormDTO;
+import com.skuridov.tp4.dto.Document.DvdFormDTO;
 import com.skuridov.tp4.dto.Loan.LoanForm;
 import com.skuridov.tp4.dto.User.MemberForm;
 import com.skuridov.tp4.model.Document.Book;
@@ -36,9 +36,9 @@ public class EmployeeService {
         return Optional.of(new MemberForm(member));
     }
 
-    public Optional<BookForm> createBook(Book book){
+    public Optional<BookFormDTO> createBook(Book book){
         bookRepository.save(book);
-        return Optional.of(new BookForm(book));
+        return Optional.of(new BookFormDTO(book));
     }
 
     public Optional<MemberForm> getMember(Long id) throws Exception {
@@ -56,14 +56,14 @@ public class EmployeeService {
         return membersForm;
     }
 
-    public Optional<CdForm> createCd(Cd cd){
+    public Optional<CdFormDTO> createCd(Cd cd){
         documentRepository.save(cd);
-        return Optional.of(new CdForm(cd));
+        return Optional.of(new CdFormDTO(cd));
     }
 
-    public Optional<DvdForm> createDvd(Dvd dvd){
+    public Optional<DvdFormDTO> createDvd(Dvd dvd){
         documentRepository.save(dvd);
-        return Optional.of(new DvdForm(dvd));
+        return Optional.of(new DvdFormDTO(dvd));
     }
 
     public Optional<LoanForm> loanDocument(long memberId, long documentId) throws Exception {
