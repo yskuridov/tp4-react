@@ -18,7 +18,6 @@ import java.util.Optional;
 public class MemberService {
     private BookRepository bookRepository;
     private LoanRepository loanRepository;
-    private FineRepository fineRepository;
     private MemberRepository memberRepository;
     private DocumentRepository documentRepository;
 
