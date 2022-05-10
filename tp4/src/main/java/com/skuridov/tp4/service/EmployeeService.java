@@ -45,6 +45,15 @@ public class EmployeeService {
         return new MemberForm(memberOpt.get());
     }
 
+    public List<MemberForm> getMembers(){
+        List<Member> members = memberRepository.findAll();
+        List<MemberForm> membersForm = new ArrayList<>();
+        for(Member m : members){
+            membersForm.add(new MemberForm(m));
+        }
+        return membersForm;
+    }
+
     public CdForm createCd(Cd cd){
         documentRepository.save(cd);
         return new CdForm(cd);
@@ -55,7 +64,7 @@ public class EmployeeService {
         return new DvdForm(dvd);
     }
 
-    public void loanDocument(long memberId, long documentId) throws Exception {
+    public LoanForm loanDocument(long memberId, long documentId) throws Exception {
         Member member = getMemberFromOptional(memberId);
         Document document = getDocumentFromOptional(documentId);
         Loan loan = new Loan(LocalDate.now(), LocalDate.now().plusDays(document.getLoanLength()), member, document);
@@ -65,6 +74,7 @@ public class EmployeeService {
             memberRepository.save(member);
             documentRepository.save(document);
             loanRepository.save(loan);
+            return new LoanForm(loan);
         }
         else throw new Exception("Document can't be loaned");
     }
