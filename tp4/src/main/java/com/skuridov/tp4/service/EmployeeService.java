@@ -15,19 +15,21 @@ import com.skuridov.tp4.repository.BookRepository;
 import com.skuridov.tp4.repository.DocumentRepository;
 import com.skuridov.tp4.repository.LoanRepository;
 import com.skuridov.tp4.repository.MemberRepository;
-import org.springframework.stereotype.Component;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Service
+@RequiredArgsConstructor
 public class EmployeeService {
-    private BookRepository bookRepository;
-    private MemberRepository memberRepository;
-    private DocumentRepository documentRepository;
-    private LoanRepository loanRepository;
+    private final BookRepository bookRepository;
+    private final MemberRepository memberRepository;
+    private final DocumentRepository documentRepository;
+    private final LoanRepository loanRepository;
 
     public Optional<MemberForm> createMember(Member member){
         memberRepository.save(member);
@@ -113,7 +115,7 @@ public class EmployeeService {
 
 
     private Member getMemberFromOptional(long id) throws Exception{
-        Optional<Member> memberOpt = memberRepository.findMemberByIdWithFineList(id);
+        Optional<Member> memberOpt = memberRepository.findMemberByIdWithLoanList(id);
         if(memberOpt.isEmpty()){
             throw new Exception("Member entity not found");
         }

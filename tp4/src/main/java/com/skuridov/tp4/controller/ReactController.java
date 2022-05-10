@@ -11,6 +11,7 @@ import com.skuridov.tp4.model.Document.Document;
 import com.skuridov.tp4.model.Loan.Loan;
 import com.skuridov.tp4.service.EmployeeService;
 import com.skuridov.tp4.service.MemberService;
+import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,14 +24,11 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/")
 @CrossOrigin(origins = "http://localhost:3000")
+@RequiredArgsConstructor
 public class ReactController {
-    private EmployeeService employeeService;
-    private MemberService memberService;
+    private final EmployeeService employeeService;
+    private final MemberService memberService;
 
-    public ReactController(EmployeeService es, MemberService ms){
-        this.employeeService = es;
-        this.memberService = ms;
-    }
 
     @GetMapping("/members")
     public List<MemberForm> getAllMembers() {

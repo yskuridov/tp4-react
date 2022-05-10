@@ -7,19 +7,20 @@ import com.skuridov.tp4.model.Document.Document;
 import com.skuridov.tp4.model.Loan.Loan;
 import com.skuridov.tp4.model.User.Member;
 import com.skuridov.tp4.repository.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Service
+@RequiredArgsConstructor
 public class MemberService {
-    private BookRepository bookRepository;
-    private LoanRepository loanRepository;
-    private MemberRepository memberRepository;
-    private DocumentRepository documentRepository;
+    private final BookRepository bookRepository;
+
 
     public List<BookForm> getBooksByTitle(String title){
         List<BookForm> booksDTO = new ArrayList<>();
