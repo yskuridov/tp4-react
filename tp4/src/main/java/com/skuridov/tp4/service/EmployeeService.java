@@ -29,14 +29,14 @@ public class EmployeeService {
     private DocumentRepository documentRepository;
     private LoanRepository loanRepository;
 
-    public MemberForm createMember(Member member){
+    public Optional<MemberForm> createMember(Member member){
         memberRepository.save(member);
-        return new MemberForm(member);
+        return Optional.of(new MemberForm(member));
     }
 
-    public BookForm createBook(Book book){
+    public Optional<BookForm> createBook(Book book){
         bookRepository.save(book);
-        return new BookForm(book);
+        return Optional.of(new BookForm(book));
     }
 
     public Optional<MemberForm> getMember(Long id) throws Exception {
@@ -54,17 +54,17 @@ public class EmployeeService {
         return membersForm;
     }
 
-    public CdForm createCd(Cd cd){
+    public Optional<CdForm> createCd(Cd cd){
         documentRepository.save(cd);
-        return new CdForm(cd);
+        return Optional.of(new CdForm(cd));
     }
 
-    public DvdForm createDvd(Dvd dvd){
+    public Optional<DvdForm> createDvd(Dvd dvd){
         documentRepository.save(dvd);
-        return new DvdForm(dvd);
+        return Optional.of(new DvdForm(dvd));
     }
 
-    public LoanForm loanDocument(long memberId, long documentId) throws Exception {
+    public Optional<LoanForm> loanDocument(long memberId, long documentId) throws Exception {
         Member member = getMemberFromOptional(memberId);
         Document document = getDocumentFromOptional(documentId);
         Loan loan = new Loan(LocalDate.now(), LocalDate.now().plusDays(document.getLoanLength()), member, document);
@@ -74,12 +74,12 @@ public class EmployeeService {
             memberRepository.save(member);
             documentRepository.save(document);
             loanRepository.save(loan);
-            return new LoanForm(loan);
+            return Optional.of(new LoanForm(loan));
         }
         else throw new Exception("Document can't be loaned");
     }
 
-    public void returnDocument(long memberId, long documentId) throws Exception{
+    public Optional<LoanForm> returnDocument(long memberId, long documentId) throws Exception{
         Member member = getMemberFromOptional(memberId);
         Document document = getDocumentFromOptional(documentId);
         Loan loan = findLoan(member, document);
@@ -88,6 +88,7 @@ public class EmployeeService {
         memberRepository.save(member);
         documentRepository.save(document);
         loanRepository.delete(loan);
+        return Optional.of(new LoanForm(loan));
     }
 
 

@@ -1,7 +1,9 @@
 package com.skuridov.tp4.controller;
 
 import com.skuridov.tp4.dto.Document.BookForm;
+import com.skuridov.tp4.dto.Document.CdForm;
 import com.skuridov.tp4.dto.Document.DocumentForm;
+import com.skuridov.tp4.dto.Document.DvdForm;
 import com.skuridov.tp4.dto.Loan.LoanForm;
 import com.skuridov.tp4.dto.User.MemberForm;
 import com.skuridov.tp4.model.Document.Book;
@@ -43,37 +45,50 @@ public class ReactController {
 
     @PutMapping("/members/{id}")
     public ResponseEntity<MemberForm> updateMember(@RequestBody MemberForm member, @PathVariable Long id){
-
+        return employeeService.createMember(member.toMember()).map(memberForm -> ResponseEntity.status(HttpStatus.CREATED).body((memberForm))).orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
     @PostMapping("/members")
     public ResponseEntity<MemberForm> createMember(@RequestBody MemberForm member){
-
+        return employeeService.createMember(member.toMember()).map(memberForm -> ResponseEntity.status(HttpStatus.CREATED).body((memberForm))).orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
-    @GetMapping("/documents/author/{name}")
+    @GetMapping("/documents/books/author/{name}")
     public List<BookForm> getBooksByAuthor(@PathVariable String name){
         return memberService.getBooksByAuthor(name);
     }
 
-    @GetMapping("/documents/name/{name}")
+    @GetMapping("/documents/books/name/{name}")
     public List<BookForm> getBooksByName(@PathVariable String name){
         return memberService.getBooksByTitle(name);
     }
 
-    @GetMapping("/documents/genre/{genre}")
+    @GetMapping("/documents/books/genre/{genre}")
     public List<BookForm> getBooksByGenre(@PathVariable String genre){
         return memberService.getBooksByGenre(genre);
     }
 
-    @GetMapping("/documents/year/{year}")
+    @GetMapping("/documents/books/year/{year}")
     public List<BookForm> getBooksByYear(@PathVariable int year){
         return memberService.getBooksByYear(year);
     }
 
-    @PostMapping("/documents")
-    public ResponseEntity<Document> createDocument(@RequestBody DocumentForm document){
+    @PostMapping("/documents/dvds")
+    public ResponseEntity<DvdForm> createDvd(@RequestBody DvdForm dvd){
+        return employeeService.createDvd(dvd.toDvd()).map(dvdForm -> ResponseEntity.status(HttpStatus.CREATED).body(dvdForm))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
 
+    @PostMapping("/documents/cds")
+    public ResponseEntity<CdForm> createCd(@RequestBody CdForm cd){
+        return employeeService.createCd(cd.toCd()).map(cdForm -> ResponseEntity.status(HttpStatus.CREATED).body(cdForm))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    }
+
+    @PostMapping("/documents/books")
+    public ResponseEntity<BookForm> createBook(@RequestBody BookForm book){
+        return employeeService.createBook(book.toBook()).map(bookForm -> ResponseEntity.status(HttpStatus.CREATED).body(bookForm))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
     @GetMapping("/loans/{id}")
@@ -83,12 +98,14 @@ public class ReactController {
     }
 
     @PostMapping("/loans")
-    public ResponseEntity<LoanForm> createLoan(@RequestBody LoanForm loan){
-
+    public ResponseEntity<LoanForm> createLoan(@RequestBody LoanForm loan) throws Exception {
+        return employeeService.loanDocument(Long.parseLong(loan.getMember()), Long.parseLong(loan.getId())).map(loanForm -> ResponseEntity.status(HttpStatus.CREATED).body(loanForm))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
     @PutMapping("/loans")
-    public ResponseEntity<LoanForm> returnDocument(@RequestBody LoanForm loan){
-
+    public ResponseEntity<LoanForm> returnDocument(@RequestBody LoanForm loan) throws Exception {
+        return employeeService.returnDocument(Long.parseLong(loan.getMember()), Long.parseLong(loan.getId())).map(loanForm -> ResponseEntity.status(HttpStatus.CREATED).body(loanForm))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 }
