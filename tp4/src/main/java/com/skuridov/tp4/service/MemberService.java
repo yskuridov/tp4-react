@@ -57,11 +57,14 @@ public class MemberService {
         Member member = getMemberFromOptional(memberId);
         Document document = getDocumentFromOptional(documentId);
         Loan loan = new Loan(LocalDate.now(), LocalDate.now().plusDays(document.getLoanLength()), member, document);
-        document.setNbCopies(document.getNbCopies() - 1);
-        member.getLoanList().add(loan);
-        memberRepository.save(member);
-        documentRepository.save(document);
-        loanRepository.save(loan);
+        if(checkForAvailability(document)){
+            document.setNbCopies(document.getNbCopies() - 1);
+            member.getLoanList().add(loan);
+            memberRepository.save(member);
+            documentRepository.save(document);
+            loanRepository.save(loan);
+        }
+        else throw new Exception("Document can't be loaned");
     }
 
     public void returnDocument(long memberId, long documentId) throws Exception{
@@ -113,5 +116,12 @@ public class MemberService {
         }
         Document document = documentOpt.get();
         return document;
+    }
+
+    private boolean checkForAvailability(Document document){
+        if(document.getNbCopies() > 0){
+            return true;
+        }
+        return false;
     }
 }
