@@ -1,14 +1,17 @@
 package com.skuridov.tp4.controller;
 
+import com.skuridov.tp4.dto.Document.BookForm;
 import com.skuridov.tp4.dto.Document.DocumentForm;
 import com.skuridov.tp4.dto.Loan.LoanForm;
 import com.skuridov.tp4.dto.User.MemberForm;
+import com.skuridov.tp4.model.Document.Book;
 import com.skuridov.tp4.model.Document.Document;
 import com.skuridov.tp4.model.Loan.Loan;
 import com.skuridov.tp4.service.EmployeeService;
 import com.skuridov.tp4.service.MemberService;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,13 +31,14 @@ public class ReactController {
     }
 
     @GetMapping("/members")
-    public ResponseEntity<List<MemberForm>> getAllMembers() {
-
+    public List<MemberForm> getAllMembers() {
+        return employeeService.getMembers();
     }
 
     @GetMapping("/members/{id}")
-    public ResponseEntity<MemberForm> getMember(@PathVariable Long id){
-
+    public ResponseEntity<MemberForm> getMember(@PathVariable Long id) throws Exception {
+        return employeeService.getMember(id).map(memberForm -> ResponseEntity.status(HttpStatus.CREATED).body(memberForm))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
     @PutMapping("/members/{id}")
@@ -47,9 +51,24 @@ public class ReactController {
 
     }
 
-    @GetMapping("/documents")
-    public ResponseEntity<List<Document>> getAllDocuments(){
+    @GetMapping("/documents/author/{name}")
+    public List<BookForm> getBooksByAuthor(@PathVariable String name){
+        return memberService.getBooksByAuthor(name);
+    }
 
+    @GetMapping("/documents/name/{name}")
+    public List<BookForm> getBooksByName(@PathVariable String name){
+        return memberService.getBooksByTitle(name);
+    }
+
+    @GetMapping("/documents/genre/{genre}")
+    public List<BookForm> getBooksByGenre(@PathVariable String genre){
+        return memberService.getBooksByGenre(genre);
+    }
+
+    @GetMapping("/documents/year/{year}")
+    public List<BookForm> getBooksByYear(@PathVariable int year){
+        return memberService.getBooksByYear(year);
     }
 
     @PostMapping("/documents")
@@ -58,8 +77,9 @@ public class ReactController {
     }
 
     @GetMapping("/loans/{id}")
-    public ResponseEntity<List<Loan>> getMemberLoans(@PathVariable Long id){
-
+    public ResponseEntity<List<LoanForm>> getMemberLoans(@PathVariable Long id) throws Exception{
+        return employeeService.getLoans(id).map(loanForms -> ResponseEntity.status(HttpStatus.CREATED).body(loanForms))
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
     @PostMapping("/loans")

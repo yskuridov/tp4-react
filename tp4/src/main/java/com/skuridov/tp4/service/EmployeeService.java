@@ -39,10 +39,10 @@ public class EmployeeService {
         return new BookForm(book);
     }
 
-    public MemberForm getMember(Long id) throws Exception {
+    public Optional<MemberForm> getMember(Long id) throws Exception {
         Optional<Member> memberOpt = memberRepository.findMemberById(id);
         if(memberOpt.isEmpty()) throw new Exception("Member with id " + id + "doesn't exist");
-        return new MemberForm(memberOpt.get());
+        return Optional.of(new MemberForm(memberOpt.get()));
     }
 
     public List<MemberForm> getMembers(){
@@ -91,13 +91,13 @@ public class EmployeeService {
     }
 
 
-    public List<LoanForm> getLoans(long id) throws Exception {
+    public Optional<List<LoanForm>> getLoans(long id) throws Exception {
         Member member = getMemberFromOptional(id);
         List<LoanForm> loanFormList = new ArrayList<>();
         for(Loan l : member.getLoanList()){
             loanFormList.add(new LoanForm(l));
         }
-        return loanFormList;
+        return Optional.of(loanFormList);
     }
 
 
