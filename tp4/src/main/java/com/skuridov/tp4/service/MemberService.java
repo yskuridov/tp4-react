@@ -4,15 +4,12 @@ import com.skuridov.tp4.dto.Document.BookForm;
 import com.skuridov.tp4.dto.Loan.LoanForm;
 import com.skuridov.tp4.model.Document.Book;
 import com.skuridov.tp4.model.Document.Document;
-import com.skuridov.tp4.model.Fine.Fine;
 import com.skuridov.tp4.model.Loan.Loan;
 import com.skuridov.tp4.model.User.Member;
-import com.skuridov.tp3.tp3spring.repository.*;
 import com.skuridov.tp4.repository.*;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -72,7 +69,6 @@ public class MemberService {
         Member member = getMemberFromOptional(memberId);
         Document document = getDocumentFromOptional(documentId);
         Loan loan = findLoan(member, document);
-        member.getFineList().add(calculateFine(loan));
         member.getLoanList().remove(loan);
         document.setNbCopies(document.getNbCopies() + 1);
         memberRepository.save(member);
@@ -80,23 +76,6 @@ public class MemberService {
         loanRepository.delete(loan);
     }
 
-    public double getFineSum(long id) throws Exception {
-        Member member = getMemberFromOptional(id);
-        double sum = 0.00;
-        for(Fine f : member.getFineList()){
-            sum += f.getAmount();
-        }
-        return sum;
-    }
-
-    public void payDebt(long id) throws Exception{
-        Member member = getMemberFromOptional(id);
-        for(Fine f : member.getFineList()){
-            fineRepository.delete(f);
-            member.getFineList().remove(f);
-        }
-        memberRepository.save(member);
-    }
 
     public List<LoanForm> getLoans(long id) throws Exception {
         Member member = getMemberFromOptional(id);
@@ -117,16 +96,6 @@ public class MemberService {
         throw new Exception("The document wasn't loaned by that member");
     }
 
-    private Fine calculateFine(Loan loan){
-        int differenceInDays;
-        differenceInDays = (int) (ChronoUnit.DAYS.between(loan.getDateDue(), LocalDate.now()));
-        if(differenceInDays > loan.getDocument().getLoanLength()){
-            Fine fine = new Fine(differenceInDays, loan.getBorrower());
-            fineRepository.save(fine);
-            return fine;
-        }
-        return null;
-    }
 
     private Member getMemberFromOptional(long id) throws Exception{
         Optional<Member> memberOpt = memberRepository.findMemberByIdWithFineList(id);
