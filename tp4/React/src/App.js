@@ -4,6 +4,7 @@ import HomePage from "./Components/HomePage";
 import PageNotFound from "./Components/PageNotFound";
 import Employee from "./Components/EmployeeComponents/Employee";
 import Member from "./Components/MemberComponents/Member";
+import AddBook from "./Components/EmployeeComponents/AddBook";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
                <Route path='*' element={<PageNotFound />} />
                <Route path='/' element={<HomePage />} />
                <Route path='/employee' element={<Employee />} />
+               <Route path='/employee/addBook' element={<AddBook />} />
                <Route path='/member' element={<Member />} />
            </Routes>
      </Router>
