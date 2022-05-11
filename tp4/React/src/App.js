@@ -2,8 +2,8 @@ import './App.css';
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import HomePage from "./Components/HomePage";
 import PageNotFound from "./Components/PageNotFound";
-import Employee from "./Components/Employee";
-import Member from "./Components/Member";
+import Employee from "./Components/EmployeeComponents/Employee";
+import Member from "./Components/MemberComponents/Member";
 
 function App() {
   return (

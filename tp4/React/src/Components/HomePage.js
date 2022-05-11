@@ -7,12 +7,12 @@ const HomePage = () => (
         <h3>Select your type of access: </h3>
         <NavLink to="/member">
             <button type="button">
-                Click Me!
+                Library Member
             </button>
         </NavLink>
         <NavLink to="/employee">
             <button type="button">
-                Click Me!
+                Library Employee
             </button>
         </NavLink>
     </div>
