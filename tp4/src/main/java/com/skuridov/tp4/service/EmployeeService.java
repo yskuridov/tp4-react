@@ -3,8 +3,8 @@ package com.skuridov.tp4.service;
 import com.skuridov.tp4.dto.Document.BookFormDTO;
 import com.skuridov.tp4.dto.Document.CdFormDTO;
 import com.skuridov.tp4.dto.Document.DvdFormDTO;
-import com.skuridov.tp4.dto.Loan.LoanForm;
-import com.skuridov.tp4.dto.User.MemberForm;
+import com.skuridov.tp4.dto.Loan.LoanFormDTO;
+import com.skuridov.tp4.dto.User.MemberFormDTO;
 import com.skuridov.tp4.model.Document.Book;
 import com.skuridov.tp4.model.Document.Cd;
 import com.skuridov.tp4.model.Document.Document;
@@ -31,9 +31,9 @@ public class EmployeeService {
     private final DocumentRepository documentRepository;
     private final LoanRepository loanRepository;
 
-    public Optional<MemberForm> createMember(Member member){
+    public Optional<MemberFormDTO> createMember(Member member){
         memberRepository.save(member);
-        return Optional.of(new MemberForm(member));
+        return Optional.of(new MemberFormDTO(member));
     }
 
     public Optional<BookFormDTO> createBook(Book book){
@@ -41,17 +41,17 @@ public class EmployeeService {
         return Optional.of(new BookFormDTO(book));
     }
 
-    public Optional<MemberForm> getMember(Long id) throws Exception {
+    public Optional<MemberFormDTO> getMember(Long id) throws Exception {
         Optional<Member> memberOpt = memberRepository.findMemberById(id);
         if(memberOpt.isEmpty()) throw new Exception("Member with id " + id + "doesn't exist");
-        return Optional.of(new MemberForm(memberOpt.get()));
+        return Optional.of(new MemberFormDTO(memberOpt.get()));
     }
 
-    public List<MemberForm> getMembers(){
+    public List<MemberFormDTO> getMembers(){
         List<Member> members = memberRepository.findAll();
-        List<MemberForm> membersForm = new ArrayList<>();
+        List<MemberFormDTO> membersForm = new ArrayList<>();
         for(Member m : members){
-            membersForm.add(new MemberForm(m));
+            membersForm.add(new MemberFormDTO(m));
         }
         return membersForm;
     }
@@ -66,7 +66,16 @@ public class EmployeeService {
         return Optional.of(new DvdFormDTO(dvd));
     }
 
-    public Optional<LoanForm> loanDocument(long memberId, long documentId) throws Exception {
+    public Optional<MemberFormDTO> updateMember(MemberFormDTO newMember, long id) throws Exception {
+        Member member = getMemberFromOptional(id);
+        List<Loan> loanList = member.getLoanList();
+        member = newMember.toMember();
+        member.setLoanList(loanList);
+        memberRepository.save(member);
+        return Optional.of(new MemberFormDTO(member));
+    }
+
+    public Optional<LoanFormDTO> loanDocument(long memberId, long documentId) throws Exception {
         Member member = getMemberFromOptional(memberId);
         Document document = getDocumentFromOptional(documentId);
         Loan loan = new Loan(LocalDate.now(), LocalDate.now().plusDays(document.getLoanLength()), member, document);
@@ -76,12 +85,12 @@ public class EmployeeService {
             memberRepository.save(member);
             documentRepository.save(document);
             loanRepository.save(loan);
-            return Optional.of(new LoanForm(loan));
+            return Optional.of(new LoanFormDTO(loan));
         }
         else throw new Exception("Document can't be loaned");
     }
 
-    public Optional<LoanForm> returnDocument(long memberId, long documentId) throws Exception{
+    public Optional<LoanFormDTO> returnDocument(long memberId, long documentId) throws Exception{
         Member member = getMemberFromOptional(memberId);
         Document document = getDocumentFromOptional(documentId);
         Loan loan = findLoan(member, document);
@@ -90,15 +99,15 @@ public class EmployeeService {
         memberRepository.save(member);
         documentRepository.save(document);
         loanRepository.delete(loan);
-        return Optional.of(new LoanForm(loan));
+        return Optional.of(new LoanFormDTO(loan));
     }
 
 
-    public Optional<List<LoanForm>> getLoans(long id) throws Exception {
+    public Optional<List<LoanFormDTO>> getLoans(long id) throws Exception {
         Member member = getMemberFromOptional(id);
-        List<LoanForm> loanFormList = new ArrayList<>();
+        List<LoanFormDTO> loanFormList = new ArrayList<>();
         for(Loan l : member.getLoanList()){
-            loanFormList.add(new LoanForm(l));
+            loanFormList.add(new LoanFormDTO(l));
         }
         return Optional.of(loanFormList);
     }

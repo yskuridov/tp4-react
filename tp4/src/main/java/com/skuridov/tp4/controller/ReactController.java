@@ -3,8 +3,8 @@ package com.skuridov.tp4.controller;
 import com.skuridov.tp4.dto.Document.BookFormDTO;
 import com.skuridov.tp4.dto.Document.CdFormDTO;
 import com.skuridov.tp4.dto.Document.DvdFormDTO;
-import com.skuridov.tp4.dto.Loan.LoanForm;
-import com.skuridov.tp4.dto.User.MemberForm;
+import com.skuridov.tp4.dto.Loan.LoanFormDTO;
+import com.skuridov.tp4.dto.User.MemberFormDTO;
 import com.skuridov.tp4.service.EmployeeService;
 import com.skuridov.tp4.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -24,23 +24,23 @@ public class ReactController {
 
 
     @GetMapping("/members")
-    public List<MemberForm> getAllMembers() {
+    public List<MemberFormDTO> getAllMembers() {
         return employeeService.getMembers();
     }
 
     @GetMapping("/members/{id}")
-    public ResponseEntity<MemberForm> getMember(@PathVariable Long id) throws Exception {
+    public ResponseEntity<MemberFormDTO> getMember(@PathVariable Long id) throws Exception {
         return employeeService.getMember(id).map(memberForm -> ResponseEntity.status(HttpStatus.CREATED).body(memberForm))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
     @PutMapping("/members/{id}")
-    public ResponseEntity<MemberForm> updateMember(@RequestBody MemberForm member, @PathVariable Long id){
-        return employeeService.createMember(member.toMember()).map(memberForm -> ResponseEntity.status(HttpStatus.CREATED).body((memberForm))).orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
+    public ResponseEntity<MemberFormDTO> updateMember(@RequestBody MemberFormDTO member, @PathVariable Long id) throws Exception {
+        return employeeService.updateMember(member, id).map(memberForm -> ResponseEntity.status(HttpStatus.CREATED).body((memberForm))).orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
     @PostMapping("/members")
-    public ResponseEntity<MemberForm> createMember(@RequestBody MemberForm member){
+    public ResponseEntity<MemberFormDTO> createMember(@RequestBody MemberFormDTO member){
         return employeeService.createMember(member.toMember()).map(memberForm -> ResponseEntity.status(HttpStatus.CREATED).body((memberForm))).orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
@@ -83,19 +83,19 @@ public class ReactController {
     }
 
     @GetMapping("/loans/{id}")
-    public ResponseEntity<List<LoanForm>> getMemberLoans(@PathVariable Long id) throws Exception{
+    public ResponseEntity<List<LoanFormDTO>> getMemberLoans(@PathVariable Long id) throws Exception{
         return employeeService.getLoans(id).map(loanForms -> ResponseEntity.status(HttpStatus.CREATED).body(loanForms))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
     @PostMapping("/loans")
-    public ResponseEntity<LoanForm> createLoan(@RequestBody LoanForm loan) throws Exception {
+    public ResponseEntity<LoanFormDTO> createLoan(@RequestBody LoanFormDTO loan) throws Exception {
         return employeeService.loanDocument(Long.parseLong(loan.getMember()), Long.parseLong(loan.getId())).map(loanForm -> ResponseEntity.status(HttpStatus.CREATED).body(loanForm))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
     @PutMapping("/loans")
-    public ResponseEntity<LoanForm> returnDocument(@RequestBody LoanForm loan) throws Exception {
+    public ResponseEntity<LoanFormDTO> returnDocument(@RequestBody LoanFormDTO loan) throws Exception {
         return employeeService.returnDocument(Long.parseLong(loan.getMember()), Long.parseLong(loan.getId())).map(loanForm -> ResponseEntity.status(HttpStatus.CREATED).body(loanForm))
                 .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }

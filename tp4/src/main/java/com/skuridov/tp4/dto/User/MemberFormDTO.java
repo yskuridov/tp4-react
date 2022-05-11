@@ -7,20 +7,20 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class MemberForm {
+public class MemberFormDTO {
     private String id;
     private String firstName;
     private String lastName;
     private String address;
 
-    public MemberForm(String id, String firstName, String lastName, String address) {
+    public MemberFormDTO(String id, String firstName, String lastName, String address) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
     }
 
-    public MemberForm(Member member){
+    public MemberFormDTO(Member member){
         this(Long.toString(member.getId()), member.getFirstName(), member.getLastName(), member.getAddress());
     }
 
