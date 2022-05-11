@@ -2,6 +2,7 @@ package com.skuridov.tp4.service;
 
 import com.skuridov.tp4.dto.Document.BookFormDTO;
 import com.skuridov.tp4.dto.Document.CdFormDTO;
+import com.skuridov.tp4.dto.Document.DocumentFormDTO;
 import com.skuridov.tp4.dto.Document.DvdFormDTO;
 import com.skuridov.tp4.dto.Loan.LoanFormDTO;
 import com.skuridov.tp4.dto.User.MemberFormDTO;
@@ -11,10 +12,7 @@ import com.skuridov.tp4.model.Document.Document;
 import com.skuridov.tp4.model.Document.Dvd;
 import com.skuridov.tp4.model.Loan.Loan;
 import com.skuridov.tp4.model.User.Member;
-import com.skuridov.tp4.repository.BookRepository;
-import com.skuridov.tp4.repository.DocumentRepository;
-import com.skuridov.tp4.repository.LoanRepository;
-import com.skuridov.tp4.repository.MemberRepository;
+import com.skuridov.tp4.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +28,38 @@ public class EmployeeService {
     private final MemberRepository memberRepository;
     private final DocumentRepository documentRepository;
     private final LoanRepository loanRepository;
+    private final CdRepository cdRepository;
+    private final DvdRepository dvdRepository;
 
+
+    public List<DocumentFormDTO> getDocuments(){
+        List<DocumentFormDTO> documentFormDTOS = new ArrayList<>();
+        documentFormDTOS.addAll(getAllBooks());
+        documentFormDTOS.addAll(getAllCds());
+        documentFormDTOS.addAll(getAllDvds());
+        return documentFormDTOS;
+    }
+
+    private List<CdFormDTO> getAllCds(){
+        List<Cd> cds = cdRepository.findAll();
+        List<CdFormDTO> cdFormDTOS = new ArrayList<>();
+        for(Cd cd : cds) cdFormDTOS.add(new CdFormDTO(cd));
+        return cdFormDTOS;
+    }
+
+    private List<DvdFormDTO> getAllDvds(){
+        List<Dvd> dvds = dvdRepository.findAll();
+        List<DvdFormDTO> dvdFormDTOS = new ArrayList<>();
+        for(Dvd dvd : dvds) dvdFormDTOS.add(new DvdFormDTO(dvd));
+        return dvdFormDTOS;
+    }
+
+    private List<BookFormDTO> getAllBooks(){
+        List<Book> books = bookRepository.findAll();
+        List<BookFormDTO> bookFormDTOS = new ArrayList<>();
+        for(Book book : books) bookFormDTOS.add(new BookFormDTO(book));
+        return bookFormDTOS;
+    }
     public Optional<MemberFormDTO> createMember(Member member){
         memberRepository.save(member);
         return Optional.of(new MemberFormDTO(member));

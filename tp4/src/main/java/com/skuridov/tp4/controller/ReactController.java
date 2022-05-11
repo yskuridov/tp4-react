@@ -2,6 +2,7 @@ package com.skuridov.tp4.controller;
 
 import com.skuridov.tp4.dto.Document.BookFormDTO;
 import com.skuridov.tp4.dto.Document.CdFormDTO;
+import com.skuridov.tp4.dto.Document.DocumentFormDTO;
 import com.skuridov.tp4.dto.Document.DvdFormDTO;
 import com.skuridov.tp4.dto.Loan.LoanFormDTO;
 import com.skuridov.tp4.dto.User.MemberFormDTO;
@@ -22,6 +23,11 @@ public class ReactController {
     private final EmployeeService employeeService;
     private final MemberService memberService;
 
+
+    @GetMapping("/documents")
+    public List<DocumentFormDTO> getAllDocuments(){
+        return employeeService.getDocuments();
+    }
 
     @GetMapping("/members")
     public List<MemberFormDTO> getAllMembers() {
