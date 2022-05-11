@@ -8,6 +8,8 @@ import AddBook from "./Components/EmployeeComponents/AddBook";
 import AddCd from "./Components/EmployeeComponents/AddCd";
 import AddDvd from "./Components/EmployeeComponents/AddDvd";
 import AddMember from "./Components/EmployeeComponents/AddMember";
+import Documents from "./Components/EmployeeComponents/Documents";
+
 
 function App() {
   return (

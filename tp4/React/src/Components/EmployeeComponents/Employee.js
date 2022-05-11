@@ -20,7 +20,9 @@ const Employee = () => (
             <button>
                 <NavLink to="/employee/addMember">Add a member</NavLink>
             </button>
-            <Documents />
+            <button>
+                <NavLink to="/employee/createLoan">Create a loan</NavLink>
+            </button>
         </div>
 
     </div>
