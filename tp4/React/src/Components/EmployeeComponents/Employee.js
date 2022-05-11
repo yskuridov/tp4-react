@@ -10,6 +10,9 @@ const Employee = () => (
             <button>
                 <NavLink to="/employee/addBook">Add a book</NavLink>
             </button>
+            <button>
+                <NavLink to="/employee/addCd">Add a CD</NavLink>
+            </button>
         </div>
 
     </div>
