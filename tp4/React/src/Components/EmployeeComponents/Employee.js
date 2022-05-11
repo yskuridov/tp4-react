@@ -1,6 +1,7 @@
 import React from "react";
 import AddBook from "./AddBook";
 import {NavLink} from "react-router-dom";
+import Documents from "./Documents";
 
 
 const Employee = () => (
@@ -19,6 +20,7 @@ const Employee = () => (
             <button>
                 <NavLink to="/employee/addMember">Add a member</NavLink>
             </button>
+            <Documents />
         </div>
 
     </div>

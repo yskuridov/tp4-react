@@ -5,14 +5,14 @@ const AddDvd = ({OnAdd}) => {
     const [publicationYear, setPublicationYear] = useState('')
     const [language, setLanguage] = useState('')
     const [duration, setDuration] = useState('')
-    const [category, setCategory] = useState('')
+    const [genre, setGenre] = useState('')
     const [mainActor, setMainActor] = useState('')
     const [nbCopies, setNbCopies] = useState('')
 
 
     const onSubmit = async (event) => {
         event.preventDefault();
-        const dvd = {title, publicationYear, language, duration, category, mainActor, nbCopies}
+        const dvd = {title, publicationYear, language, duration, genre, mainActor, nbCopies}
         await fetch("http://localhost:8080/documents/cds",{
             method:"POST",
             headers:{"Content-Type":"application/json"},
@@ -22,7 +22,7 @@ const AddDvd = ({OnAdd}) => {
         setPublicationYear('')
         setLanguage('')
         setDuration('')
-        setCategory('')
+        setGenre('')
         setMainActor('')
         setNbCopies('')
     }
@@ -60,10 +60,10 @@ const AddDvd = ({OnAdd}) => {
                        onChange={(e) => setDuration(e.target.value)} />
             </div>
             <div className='form-control'>
-                <label>Category</label>
-                <input type='number'
-                       value={category}
-                       onChange={(e) => setCategory(e.target.value)} />
+                <label>Genre</label>
+                <input type='text'
+                       value={genre}
+                       onChange={(e) => setGenre(e.target.value)} />
             </div>
             <div className='form-control'>
                 <label>Main Actor</label>

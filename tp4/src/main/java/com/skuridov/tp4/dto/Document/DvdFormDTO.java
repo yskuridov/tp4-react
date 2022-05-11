@@ -21,7 +21,7 @@ public class DvdFormDTO extends DocumentFormDTO {
     }
 
     public DvdFormDTO(Dvd dvd){
-        this(Long.toString(dvd.getId()), dvd.getTitle(), dvd.getPublicationYear(), dvd.getLanguage(), dvd.getDurationInMinutes(), dvd.getCategory(), dvd.getMainActor(), dvd.getNbCopies());
+        this(Long.toString(dvd.getId()), dvd.getTitle(), dvd.getPublicationYear(), dvd.getLanguage(), dvd.getDurationInMinutes(), dvd.getGenre(), dvd.getMainActor(), dvd.getNbCopies());
     }
 
     public Dvd toDvd(){
