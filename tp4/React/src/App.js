@@ -6,6 +6,7 @@ import Employee from "./Components/EmployeeComponents/Employee";
 import Member from "./Components/MemberComponents/Member";
 import AddBook from "./Components/EmployeeComponents/AddBook";
 import AddCd from "./Components/EmployeeComponents/AddCd";
+import AddDvd from "./Components/EmployeeComponents/AddDvd";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
                <Route path='/employee' element={<Employee />} />
                <Route path='/employee/addBook' element={<AddBook />} />
                <Route path='/employee/addCd' element={<AddCd />} />
+               <Route path='/employee/addDvd' element={<AddDvd />} />
                <Route path='/member' element={<Member />} />
            </Routes>
      </Router>
